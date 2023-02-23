@@ -1,0 +1,38 @@
+<!-- index.html -->
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Chat</title>
+</head>
+
+<body>
+    <div id="messages"></div>
+    <form id="message_form">
+        <input type="text" name="note" placeholder="Name" required>
+        <button type="submit">Send</button>
+    </form>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.6.1/socket.io.min.js"
+        integrity="sha512-AI5A3zIoeRSEEX9z3Vyir8NqSMC1pY7r5h2cE+9J6FLsoEmSSGLFaqMQw8SWvoONXogkfFrkQiJfLeHLz3+HOg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script>
+        // Connect to the server
+        const socket = io.connect('http://localhost:3000');
+
+        // Send a message to the server
+        socket.emit('message', 'Hello, server!');
+
+        // Receive a message from the server
+        socket.on('message', (data) => {
+            console.log('Received message:', data);
+        });
+
+        // Disconnect from the server
+        socket.disconnect();
+    </script>
+</body>
+
+</html>
