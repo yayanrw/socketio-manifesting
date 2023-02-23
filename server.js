@@ -28,7 +28,7 @@ const io = require("socket.io")(server, {
 io.on("connection", (socket) => {
   console.log(`Socket.io Connected: ${socket.id}`);
 
-  socket.on("batchNumber", (data) => {
+  socket.on("messages", (data) => {
     // get from db
     db.query(
       "SELECT COUNT(*) total FROM t_qr WHERE qr_batch = ?",
@@ -36,10 +36,16 @@ io.on("connection", (socket) => {
       (error, results) => {
         if (error) {
           console.error("Error retrieving data from database: ", error);
-          io.emit("batchNumber", 0);
+          io.emit("messages", json);
           return error;
         } else {
-          io.emit("batchNumber", results[0].total);
+          io.emit(
+            "messages",
+            JSON.stringify({
+              batchNumber: data,
+              total: results[0].total,
+            })
+          );
           return results;
         }
       }
