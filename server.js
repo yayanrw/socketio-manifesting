@@ -36,11 +36,18 @@ io.on("connection", (socket) => {
       (error, results) => {
         if (error) {
           console.error("Error retrieving data from database: ", error);
-          io.emit("messages", json);
+          io.emit("messages", error);
           return error;
         } else {
           io.emit(
             "messages",
+            JSON.stringify({
+              batchNumber: data,
+              total: results[0].total,
+            })
+          );
+
+          console.log(
             JSON.stringify({
               batchNumber: data,
               total: results[0].total,
